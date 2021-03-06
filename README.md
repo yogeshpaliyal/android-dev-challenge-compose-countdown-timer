@@ -7,7 +7,7 @@
 
 ## :scroll: Description
 <!--- Describe your app in one or two sentences -->
-A Simple 1 minute timer app, build using Jetpack Pack Compose
+A Simple 1 minute timer app, build using Jetpack Pack Compose.
 
 ## :bulb: Motivation and Context
 <!--- Optionally point readers to interesting parts of your submission. -->

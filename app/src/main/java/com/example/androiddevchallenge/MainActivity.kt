@@ -53,8 +53,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.androiddevchallenge.ui.theme.MyTheme
+import com.example.androiddevchallenge.ui.theme.lightGrey
+import com.example.androiddevchallenge.ui.theme.timerColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -98,7 +101,21 @@ fun Timer() {
             .fillMaxHeight()
 
     ) {
-        val (progress, progressTxt, btnsRow) = createRefs()
+        val (progress, progressBg, progressTxt, btnsRow) = createRefs()
+
+        CircularProgressIndicator(
+            1f,
+            modifier = Modifier
+                .constrainAs(progressBg) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(btnsRow.top)
+                }
+                .height(300.dp)
+                .width(300.dp),
+            strokeWidth = 8.dp, color = lightGrey
+        )
 
         Progress(
             Modifier
@@ -191,6 +208,7 @@ fun Timer() {
                     countdownSeconds = it
                     if (it == 0) {
                         // ended
+                        countdownSeconds = totalTimerTime
                         timerState = TimerState.INACTIVE
                     }
                 }
@@ -206,7 +224,7 @@ fun Progress(modifier: Modifier = Modifier, countdownSeconds: Int, totalSeconds:
         animationSpec = SpringSpec(Spring.DampingRatioNoBouncy, 5f, visibilityThreshold = 1 / 1000f)
     ).value
 
-    CircularProgressIndicator(animatedProgress, modifier = modifier)
+    CircularProgressIndicator(animatedProgress, modifier = modifier, strokeWidth = 8.dp)
 }
 
 @Composable
@@ -225,10 +243,11 @@ fun RunTimer(time: Int, onTimerChange: (Int) -> Unit) {
 fun TimerUi(modifier: Modifier, countdownSeconds: Int) {
     val minutes = countdownSeconds / 60
     val seconds = countdownSeconds % 60
+    val textSize = 28.sp
     Row(modifier) {
-        Text(text = "$minutes")
-        Text(text = ":")
-        Text(text = "$seconds")
+        Text(text = "$minutes", fontSize = textSize, color = timerColor)
+        Text(text = ":", fontSize = textSize, color = timerColor)
+        Text(text = "$seconds", fontSize = textSize, color = timerColor)
     }
 }
 
